@@ -53,11 +53,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'firstsite.urls'
 
-ABSOLUTE_URL_OVERRIDES = {
-    # 'bboard.rubric': lambda rec: "/bboard/%s/" % rec.pk,
-    # 'bboard.rubric': lambda rec: f"/bboard/{rec.pk}/",
-    'bboard.rubric': lambda rec: f"/{rec.pk}/",
-}
+# ABSOLUTE_URL_OVERRIDES = {
+#     # 'bboard.rubric': lambda rec: "/bboard/%s/" % rec.pk,
+#     # 'bboard.rubric': lambda rec: f"/bboard/{rec.pk}/",
+#     'bboard.rubric': lambda rec: f"/{rec.pk}/",
+# }
 
 TEMPLATES = [
     {

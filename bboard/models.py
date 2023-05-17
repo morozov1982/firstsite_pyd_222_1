@@ -15,19 +15,18 @@ def validate_even(val):
                               params={'value': val})
 
 
-class MinMaxValueValidator:
-    def __init__(self, min_value, max_value):
-        self.min_value = min_value
-        self.max_value = max_value
-
-    def __call__(self, val):
-        if val < self.min_value or val > self.max_value:
-            raise ValidationError('Введённое число должно быть > %(min)s '
-                                  'и < %(max)s',
-                                  code='out_of_range',
-                                  params={'min': self.min_value,
-                                          'max': self.max_value})
-
+# class MinMaxValueValidator:
+#     def __init__(self, min_value, max_value):
+#         self.min_value = min_value
+#         self.max_value = max_value
+#
+#     def __call__(self, val):
+#         if val < self.min_value or val > self.max_value:
+#             raise ValidationError('Введённое число должно быть > %(min)s '
+#                                   'и < %(max)s',
+#                                   code='out_of_range',
+#                                   params={'min': self.min_value,
+#                                           'max': self.max_value})
 
 
 class AdvUser(models.Model):
@@ -60,17 +59,17 @@ class Rubric(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        # Выполняем какие-то действия до сохранения
-        if True:
-            super().save(*args, **kwargs)
-        # Выполняем какие-то действия после сохранения
-
-    def delete(self, *args, **kwargs):
-        # Выполняем какие-то действия до удаления
-        if True:
-            super().delete(*args, **kwargs)
-        # Выполняем какие-то действия после удаления
+    # def save(self, *args, **kwargs):
+    #     # Выполняем какие-то действия до сохранения
+    #     if True:
+    #         super().save(*args, **kwargs)
+    #     # Выполняем какие-то действия после сохранения
+    #
+    # def delete(self, *args, **kwargs):
+    #     # Выполняем какие-то действия до удаления
+    #     if True:
+    #         super().delete(*args, **kwargs)
+    #     # Выполняем какие-то действия после удаления
 
     def get_absolute_url(self):
         # return "/bboard/%s/" % self.pk
@@ -98,7 +97,7 @@ class Bb(models.Model):
         # validators=[validators.RegexValidator(regex='^.{4,}$',
         # inverse_match=True)]
         # validators=[validators.ProhibitNullCharactersValidator()]  # \x00
-        error_messages={'min_length': 'Слишком мало символов'}
+        error_messages={'min_length': 'Слишком мало символов'},
     )
 
     content = models.TextField(
@@ -111,7 +110,7 @@ class Bb(models.Model):
         null=True,
         blank=True,
         verbose_name="Цена",
-        validators=[validate_even, MinMaxValueValidator(50, 60_000_000)]
+        validators=[validate_even]  # , MinMaxValueValidator(50, 60_000_000)]
     )
 
     published = models.DateTimeField(

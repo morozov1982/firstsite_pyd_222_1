@@ -53,6 +53,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'firstsite.urls'
 
+# ABSOLUTE_URL_OVERRIDES = {
+#     # 'bboard.rubric': lambda rec: "/bboard/%s/" % rec.pk,
+#     # 'bboard.rubric': lambda rec: f"/bboard/{rec.pk}/",
+#     'bboard.rubric': lambda rec: f"/{rec.pk}/",
+# }
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -105,9 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Almaty'
 
 USE_I18N = True
 

@@ -1,4 +1,5 @@
 {% load static %}
+{% load count_bbs %}
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -18,7 +19,11 @@
     {% for rubric in rubrics %}
 {#        <a href="{% url 'by_rubric' rubric.pk %}">#}
         <a href="{{ rubric.get_absolute_url }}">
-            {{ rubric.name }}</a>
+            {{ rubric.name }}
+            {% if count_bb %}
+                ({{ count_bb|count_bbs:rubric.pk }})
+            {% endif %}
+        </a>
     {% endfor %}
 </nav>
 <section>

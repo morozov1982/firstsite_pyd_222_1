@@ -1,5 +1,5 @@
 from django.db.models import Min, Max, Count, Q, Sum, IntegerField, Avg
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render
 from django.template.loader import get_template, render_to_string
 from django.urls import reverse_lazy, reverse
@@ -15,6 +15,12 @@ def count_bb():
         result.update({r.pk: r.num_bbs})
 
     return result
+
+
+def print_request_fields(request):
+    for attr in dir(request):
+        value = getattr(request, attr)
+        print(f"{attr}: {value}")
 
 
 class BbCreateView(CreateView):
@@ -103,11 +109,18 @@ def index_old(request):
 
 
 def by_rubric(request, rubric_id, **kwargs):
+    print_request_fields(request)
+
+    current_rubric = Rubric()
+    try:
+        current_rubric = Rubric.objects.get(pk=rubric_id)
+    except current_rubric.DoesNotExist:
+        return HttpResponseNotFound('Такой рубрики нет!')
+
     bbs = Bb.objects.filter(rubric=rubric_id)
     rubrics = Rubric.objects.all()
-    current_rubric = Rubric.objects.get(pk=rubric_id)
 
-    print(kwargs.get('name'), kwargs.get('beaver'))
+    # print(kwargs.get('name'), kwargs.get('beaver'))
 
     context = {
         'bbs': bbs,
@@ -117,6 +130,7 @@ def by_rubric(request, rubric_id, **kwargs):
         # 'name': kwargs.get('name'),
         'kwargs': kwargs,
     }
+
     return render(request, 'bboard/by_rubric.html', context)
 
 
@@ -154,3 +168,12 @@ def add_and_save(request):
         bbf = BbForm()
         context = {'form': bbf}
         return render(request, 'bboard/create.html', context)
+
+
+# def detail(request, bb_id):
+#     try:
+#         bb = Bb.objects.get(pk=bb_id)
+#     except Bb.DoesNotExist:
+#         # return HttpResponseNotFound('Такого объявлениея нет')
+#         return Http404('Такого объявлениея нет')
+#     return HttpResponse(...)

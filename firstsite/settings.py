@@ -109,6 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DEFAULT_CHARSET = 'utf-8'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/

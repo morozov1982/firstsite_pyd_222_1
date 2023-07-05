@@ -6,6 +6,7 @@ class BbAdmin(admin.ModelAdmin):
     list_display = ('title', 'content', 'price', 'published', 'rubric')
     list_display_links = ('title', 'content')
     search_fields = ('title', 'content')
+    readonly_fields = ('published',)
 
 
 admin.site.register(Rubric)

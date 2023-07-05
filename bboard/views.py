@@ -5,9 +5,10 @@ from django.http import HttpResponseRedirect, HttpResponse, \
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template.loader import get_template, render_to_string
 from django.urls import reverse_lazy, reverse
+from django.views.generic.dates import ArchiveIndexView, MonthArchiveView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, RedirectView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 
 from bboard.forms import BbForm
@@ -240,6 +241,10 @@ class BbDetailView(DetailView):
         return context
 
 
+class BbRedirectView(RedirectView):
+    url = '/detail/%(pk)d/'
+
+
 class BbByRubricView(ListView):
     template_name = 'bboard/by_rubric.html'
     context_object_name = 'bbs'
@@ -273,5 +278,26 @@ class BbAddView(FormView):
         return self.object
 
     def get_success_url(self):
-        return reverse('bboard:by_rubric',
+        return reverse('by_rubric',
                        kwargs={'rubric_id': self.object.cleaned_data['rubric'].pk})
+
+
+class BbIndexView(ArchiveIndexView):
+    model = Bb
+    date_field = 'published'
+    date_list_period = 'year'
+    template_name = 'bboard/index.html'
+    context_object_name = 'bbs'
+    allow_empty = True
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['rubrics'] = Rubric.objects.all()
+        return context
+
+
+class BbMonthArchiveView(MonthArchiveView):
+    model = Bb
+    date_field = 'published'
+    month_format = '%m'
+    context_object_name = 'bbs'

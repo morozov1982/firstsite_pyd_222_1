@@ -1,7 +1,10 @@
 from django.urls import path, re_path
+from django.views.generic.dates import WeekArchiveView
 
+from bboard.models import Bb
 from bboard.views import index, by_rubric, BbCreateView, \
-    add_save, add, add_and_save, detail, BbByRubricView, BbDetailView, BbAddView
+    add_save, add, add_and_save, detail, BbByRubricView, BbDetailView, BbAddView, BbIndexView, BbMonthArchiveView, \
+    BbRedirectView
 
 vals = {
     'name': 'by_index',
@@ -18,6 +21,7 @@ vals = {
 
 urlpatterns = [
     path('', index, name='index'),
+    # path('', BbIndexView.as_view(), name='index'),
     # path('<int:rubric_id>/', by_rubric, vals, name='by_rubric'),
     path('<int:rubric_id>/', BbByRubricView.as_view(), name='by_rubric'),
     # path('add/', BbCreateView.as_view(), name='add'),
@@ -27,5 +31,11 @@ urlpatterns = [
     path('read/<int:rec_id>/', detail, name='read'),
     # path('add/', BbCreateView.as_view(), name='add'),
     path('add/', BbAddView.as_view(), name='add'),
+    path('<int:year>/<int:month>/', BbMonthArchiveView.as_view()),
+    path('<int:year>/week/<int:week>/', WeekArchiveView.as_view(
+        model=Bb, date_field="published", context_object_name='bbs'
+    )),
     path('detail/<int:pk>/', BbDetailView.as_view(), name='detail'),
+    path('detail/<int:year>/<int:month>/<int:day>/<int:pk>/',
+         BbRedirectView.as_view(), name='old_detail'),
 ]

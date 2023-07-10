@@ -2,6 +2,8 @@
 
 {% block content %}
 
+{#    <h1>{{ test_var }}</h1>#}
+
     {% if user.is_authenticated %}
     <h3>
         <a href="{% url 'authapp:logout' %}">
@@ -15,6 +17,8 @@
             </a>
         </h3>
     {% endif %}
+
+    <p>Первое объявление: {{ bbs.0.title }}</p>
 
     {% for bb in bbs %}
         <div>

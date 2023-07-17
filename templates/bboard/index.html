@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    <p>{{ block.super }}</p>
+
     {% if user.is_authenticated %}
     <h3>
         <a href="{% url 'authapp:logout' %}">
@@ -31,4 +33,4 @@
             <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
         </div>
     {% endfor %}
-{% endblock %}
+{% endblock content %}

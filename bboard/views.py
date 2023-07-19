@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Min, Max, Count, Q, Sum, IntegerField, Avg
 from django.http import HttpResponseRedirect, HttpResponse, \
     HttpResponseNotFound, Http404, StreamingHttpResponse, FileResponse, \
@@ -65,17 +66,40 @@ def index_resp(request):
     return resp
 
 
-def index(request):
-    bbs = Bb.objects.all()
-    rubrics = Rubric.objects.all()
-    context = {'bbs': bbs, 'rubrics': rubrics}
-    # template = get_template('bboard/index.html')
-    # return HttpResponse(template.render(context, request))
-    return HttpResponse(render_to_string('bboard/index.html', context, request))
-    # data = {'title': 'Мотоцикл', 'content': 'Старый', 'price': 10000.0}
-    # return JsonResponse(data)
-    # return redirect('by_rubric', rubric_id=bbf.cleaned_data['rubric'].pk)
+# def index(request):
+#     rubrics = Rubric.objects.all()
+#     bbs = Bb.objects.all()
+#     paginator = Paginator(bbs, 5)
+#
+#     if 'page' in request.GET:
+#         page_num = request.GET['page']
+#     else:
+#         page_num = 1
+#
+#     page = paginator.get_page(page_num)
+#     context = {'rubrics': rubrics, 'page': page, 'bbs': page.object_list}
+#
+#     return HttpResponse(render_to_string('bboard/index.html', context, request))
 
+def index(request, page=1):
+    rubrics = Rubric.objects.all()
+    bbs = Bb.objects.all()
+    paginator = Paginator(bbs, 5)
+
+    try:
+        bbs_paginator = paginator.get_page(page)
+    except PageNotAnInteger:
+        bbs_paginator = paginator.get_page(1)
+    except EmptyPage:
+        bbs_paginator = paginator.get_page(paginator.num_pages)
+
+    context = {
+        'rubrics': rubrics,
+        'page': bbs_paginator,
+        'bbs': bbs_paginator.object_list
+    }
+
+    return HttpResponse(render_to_string('bboard/index.html', context, request))
 
 
 # def index(request):
@@ -243,6 +267,7 @@ class BbDetailView(DetailView):
 class BbByRubricView(ListView):
     template_name = 'bboard/by_rubric.html'
     context_object_name = 'bbs'
+    paginate_by = 2
 
     def get_queryset(self):
         return Bb.objects.filter(rubric=self.kwargs['rubric_id'])

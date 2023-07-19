@@ -2,6 +2,8 @@
 
 {% block content %}
 
+    <p>Количество записей: {{ page.count }}</p>
+
     <p>{{ block.super }}</p>
 
     {% if user.is_authenticated %}
@@ -33,4 +35,39 @@
             <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
         </div>
     {% endfor %}
+
+{#    <p> #}
+{#        {% if page.has_previous %} #}
+{#            <a href="?page={{ page.previous_page_number }}">&lt;</a> #}
+{#            &nbsp; &nbsp; | &nbsp; &nbsp; #}
+{#        {% endif %} #}
+
+{#        {% for i in page.paginator.page_range %} #}
+{#            &nbsp; {{ i }} &nbsp; #}
+{#        {% endfor %} #}
+
+{#        № {{ page.number }} из {{ page.paginator.num_pages }} #}
+
+{#        {% if page.has_next %} #}
+{#            &nbsp; &nbsp; | &nbsp; &nbsp; #}
+{#            <a href="?page={{ page.next_page_number }}">&gt;</a> #}
+{#        {% endif %} #}
+{#    </p> #}
+
+    <p>
+        {% if page.has_previous %}
+            <a href="{% url 'page' page.previous_page_number %}">&#9664;</a>
+            &nbsp; &nbsp; | &nbsp; &nbsp;
+        {% endif %}
+
+        {% for i in page.paginator.page_range %}
+            &nbsp; {{ i }} &nbsp;
+        {% endfor %}
+
+        {% if page.has_next %}
+            &nbsp; &nbsp; | &nbsp; &nbsp;
+            <a href="{% url 'page' page.next_page_number %}">&#9654;</a>
+        {% endif %}
+    </p>
+
 {% endblock content %}

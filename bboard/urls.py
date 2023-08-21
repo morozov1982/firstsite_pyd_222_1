@@ -1,7 +1,8 @@
 from django.urls import path, re_path
 
-from bboard.views import index, by_rubric, BbCreateView, \
-    add_save, add, add_and_save, detail, BbByRubricView, BbDetailView, BbAddView
+from bboard.views import (index, by_rubric, BbCreateView,
+    add_save, add, add_and_save, detail, BbByRubricView,
+                          BbDetailView, BbAddView, rubrics, bbs)
 
 vals = {
     'name': 'by_index',
@@ -18,6 +19,9 @@ vals = {
 
 urlpatterns = [
     path('', index, name='index'),
+    path('rubrics/', rubrics, name='rubrics'),
+    path('bbs/<int:rubric_id>/', bbs, name='bbs'),
+
     path('page/<int:page>/', index, name='page'),
     # path('<int:rubric_id>/', by_rubric, vals, name='by_rubric'),
     path('<int:rubric_id>/', BbByRubricView.as_view(), name='by_rubric'),

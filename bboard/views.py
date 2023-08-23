@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Min, Max, Count, Q, Sum, IntegerField, Avg
 from django.forms import modelformset_factory, inlineformset_factory
@@ -30,10 +32,19 @@ def print_request_fields(request):
         print(f"{attr}: {value}")
 
 
-class BbCreateView(CreateView):
+# class BbCreateView(CreateView):
+# class BbCreateView(LoginRequiredMixin, CreateView):
+class BbCreateView(UserPassesTestMixin, CreateView):
     template_name = 'bboard/create.html'
     form_class = BbForm
     success_url = reverse_lazy('index')
+
+    # Начало: Для UserPassesTestMixin
+    def test_func(self):
+        return self.request.user.is_staff
+    # Конец: Для UserPassesTestMixin
+
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -303,6 +314,10 @@ class BbAddView(FormView):
                        kwargs={'rubric_id': self.object.cleaned_data['rubric'].pk})
 
 
+# @permission_required('bboard.view_rubric')
+# @permission_required(('bboard.view_rubric', 'bboard.change_rubric'))
+# @user_passes_test(lambda user: user.is_staff)
+@login_required
 def rubrics(request):
     RubricFormSet = modelformset_factory(Rubric, fields=('name',),
                                          can_delete=True)
@@ -319,6 +334,7 @@ def rubrics(request):
     return render(request, 'bboard/rubrics.html', context)
 
 
+@login_required
 def bbs(request, rubric_id):
     BbsFormSet = inlineformset_factory(Rubric, Bb, form=BbForm, extra=1)
     rubric = Rubric.objects.get(pk=rubric_id)

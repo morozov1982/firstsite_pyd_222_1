@@ -88,7 +88,7 @@ class PrivateMessage(Message):
     name = models.CharField(max_length=40)
     email = None
 
-    class Meta:
+    class Meta(Message.Meta):
         pass
 
 

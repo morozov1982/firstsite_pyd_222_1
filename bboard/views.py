@@ -94,8 +94,12 @@ def index_resp(request):
 #     return HttpResponse(render_to_string('bboard/index.html', context, request))
 
 def index(request, page=1):
-    rubrics = Rubric.objects.all()
+    # rubrics = Rubric.objects.all()
+    # rubrics = Rubric.objects.order_by_bb_count()
+    rubrics = Rubric.objects.order_by_bb_count()
+    # rubrics = Rubric.bbs.order_by_bb_count()
     bbs = Bb.objects.all()
+    # bbs = Bb.by_price.all()
     paginator = Paginator(bbs, 5)
 
     try:
@@ -108,7 +112,8 @@ def index(request, page=1):
     context = {
         'rubrics': rubrics,
         'page': bbs_paginator,
-        'bbs': bbs_paginator.object_list
+        'bbs': bbs_paginator.object_list,
+        'count_bb': count_bb(),
     }
 
     return HttpResponse(render_to_string('bboard/index.html', context, request))
@@ -282,11 +287,13 @@ class BbByRubricView(ListView):
     paginate_by = 2
 
     def get_queryset(self):
-        return Bb.objects.filter(rubric=self.kwargs['rubric_id'])
+        # return Bb.objects.filter(rubric=self.kwargs['rubric_id'])
+        return Bb.by_price.filter(rubric=self.kwargs['rubric_id'])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.all()
+        context['count_bb'] = count_bb()
         context['current_rubric'] = Rubric.objects.get(pk=self.kwargs['rubric_id'])
         return context
 

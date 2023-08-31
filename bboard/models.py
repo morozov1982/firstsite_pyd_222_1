@@ -15,38 +15,25 @@ def validate_even(val):
                               params={'value': val})
 
 
-# class MinMaxValueValidator:
-#     def __init__(self, min_value, max_value):
-#         self.min_value = min_value
-#         self.max_value = max_value
-#
-#     def __call__(self, val):
-#         if val < self.min_value or val > self.max_value:
-#             raise ValidationError('Введённое число должно быть > %(min)s '
-#                                   'и < %(max)s',
-#                                   code='out_of_range',
-#                                   params={'min': self.min_value,
-#                                           'max': self.max_value})
+class RubricQuerySet(models.QuerySet):
+    def order_by_bb_count(self):
+        return self.annotate(cnt=models.Count('bb')).order_by('-cnt')
 
 
-# class AdvUser(models.Model):
-#     is_activated = models.BooleanField(
-#         default=True,
-#     )
-#
-#     user = models.OneToOneField(
-#         User,
-#         on_delete=models.CASCADE
-#     )
+class RubricManager(models.Manager):
+    def get_queryset(self):
+        # return super().get_queryset().order_by('name')
+        return RubricQuerySet(self.model, using=self._db)
+
+    def order_by_bb_count(self):
+        # return super().get_queryset().annotate(
+        #     cnt=models.Count('bb')).order_by('-cnt')
+        return self.get_queryset().order_by_bb_count()
 
 
-# class Spare(models.Model):
-#     name = models.CharField(max_length=30)
-#
-#
-# class Machine(models.Model):
-#     name = models.CharField(max_length=30)
-#     spares = models.ManyToManyField(Spare)
+class BbManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().order_by('price')
 
 
 class Rubric(models.Model):
@@ -55,6 +42,15 @@ class Rubric(models.Model):
         db_index=True,
         verbose_name="Название",
     )
+
+    objects = RubricManager()
+    # bbs = RubricManager()
+
+    # objects = models.Manager()
+    # bbs = RubricManager()
+
+    # objects = RubricQuerySet.as_manager()
+    # objects = models.Manager.from_queryset(RubricQuerySet)()
 
     def __str__(self):
         return self.name
@@ -130,6 +126,9 @@ class Bb(models.Model):
         db_index=True,
         verbose_name="Опубликовано",
     )
+
+    objects = models.Manager()
+    by_price = BbManager()
 
     def __str__(self):
         return f'Объявление: {self.title}'

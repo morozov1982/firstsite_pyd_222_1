@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'captcha',
+
     'bboard.apps.BboardConfig',
     'testapp.apps.TestappConfig',
     'authapp',
@@ -142,3 +144,14 @@ LOGOUT_REDIRECT_URL = 'index'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Настройки Капчи
+# CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.math_challenge'
+CAPTCHA_CHALLENGE_FUNCT = 'captcha.helpers.random_char_challenge'
+CAPTCHA_LENGTH = 6
+CAPTCHA_TIMEOUT = 10
+CAPTCHA_LETTER_ROTATION = (-15, 15)
+CAPTCHA_BACKGROUND_COLOR = '#001100'
+CAPTCHA_FOREGROUND_COLOR = '#FFFFFF'
+

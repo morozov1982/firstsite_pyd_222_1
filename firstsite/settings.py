@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'captcha',
+    'precise_bbcode',
 
     'bboard.apps.BboardConfig',
     'testapp.apps.TestappConfig',
@@ -147,7 +148,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 LOGOUT_REDIRECT_URL = 'index'
@@ -167,3 +168,5 @@ CAPTCHA_LETTER_ROTATION = (-15, 15)
 CAPTCHA_BACKGROUND_COLOR = '#001100'
 CAPTCHA_FOREGROUND_COLOR = '#FFFFFF'
 
+BBCODE_SMILIES_UPLOAD_TO = "static/precise_bbcode/smilies"
+# BBCODE_ALLOW_SMILIES = False

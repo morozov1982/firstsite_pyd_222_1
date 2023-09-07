@@ -13,6 +13,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
+from precise_bbcode.bbcode import get_parser
 
 from bboard.forms import BbForm, SearchForm
 from bboard.models import Bb, Rubric
@@ -265,9 +266,12 @@ def add_and_save(request):
 
 
 def detail(request, rec_id):
+    # parser = get_parser()
     bb = get_object_or_404(Bb, pk=rec_id)
+    # parsed_content = parser.render(bb.content)
     bbs = get_list_or_404(Bb, rubric=bb.rubric.pk)
     context = {'bb': bb, 'bbs': bbs}
+    # context = {'bb': bb, 'parsed_content': parsed_content, 'bbs': bbs}
     return HttpResponse(render_to_string('bboard/detail.html',
                                          context, request))
 
@@ -277,6 +281,10 @@ class BbDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        # parser = get_parser()
+        # context['parsed_content'] = parser.render(context.get('bb').content)
+
         context['rubrics'] = Rubric.objects.all()
         return context
 

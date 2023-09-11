@@ -1,76 +1,66 @@
 {% extends "layout/basic.html" %}
 {% load bbcode_tags %}
+{% load bootstrap4 %}
 
 {% block content %}
 
-    <p>Количество записей: {{ page.count }}</p>
+<p>Количество записей: {{ page.count }}</p>
 
-    <p>{{ block.super }}</p>
+<p>{{ block.super }}</p>
 
-    {% if user.is_authenticated %}
-    <h3>
-        {# <a href="{% url 'authapp:logout' %}"> #}
-        <a href="{% url 'logout' %}">
-            Выйти ({{ user.username }})
+{% if user.is_authenticated %}
+<h3>
+    <a href="{% url 'logout' %}">
+        Выйти ({{ user.username }})
+    </a>
+</h3>
+{% else %}
+<h3>
+    <a href="{% url 'login' %}">
+        Войти
+    </a>
+</h3>
+{% endif %}
+
+{#% bootstrap_pagination page size="small" url="/page" %#}
+
+{% for bb in bbs %}
+<div>
+    <h2>
+        <a href="{% url 'detail' pk=bb.pk %}">
+            {{ bb.title_and_price }}
         </a>
-    </h3>
-    {% else %}
-        <h3>
-            {# <a href="{% url 'authapp:login' %}"> #}
-            <a href="{% url 'login' %}">
-                Войти
-            </a>
-        </h3>
-    {% endif %}
+    </h2>
+    <p>{{ bb.content.rendered }}</p>
+    <p><a href="{{ bb.rubric.get_absolute_url }}">
+        {{ bb.rubric.name }}</a></p>
+    <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
+</div>
+{% endfor %}
 
-    {% for bb in bbs %}
-        <div>
-{#            <h2>{{ bb.title }}</h2>#}
-            <h2>
-                {#<a href="{% url 'read' bb.pk %}">#}
-                <a href="{% url 'detail' pk=bb.pk %}">
-                    {{ bb.title_and_price }}
-                </a>
-            </h2>
-            <p>{{ bb.content.rendered }}</p>
-            <p><a href="{{ bb.rubric.get_absolute_url }}">
-                {{ bb.rubric.name }}</a></p>
-            <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>
-        </div>
-    {% endfor %}
 
-{#    <p> #}
-{#        {% if page.has_previous %} #}
-{#            <a href="?page={{ page.previous_page_number }}">&lt;</a> #}
-{#            &nbsp; &nbsp; | &nbsp; &nbsp; #}
-{#        {% endif %} #}
-
-{#        {% for i in page.paginator.page_range %} #}
-{#            &nbsp; {{ i }} &nbsp; #}
-{#        {% endfor %} #}
-
-{#        № {{ page.number }} из {{ page.paginator.num_pages }} #}
-
-{#        {% if page.has_next %} #}
-{#            &nbsp; &nbsp; | &nbsp; &nbsp; #}
-{#            <a href="?page={{ page.next_page_number }}">&gt;</a> #}
-{#        {% endif %} #}
-{#    </p> #}
-
-    <p>
+<nav>
+    <ul class="pagination">
         {% if page.has_previous %}
-            <a href="{% url 'page' page.previous_page_number %}">&#9664;</a>
-            &nbsp; &nbsp; | &nbsp; &nbsp;
+        <li class="page-item">
+            <a class="page-link" href="{% url 'page' page.previous_page_number %}">Предыдущая</a>
+        </li>
         {% endif %}
-
         {% for i in page.paginator.page_range %}
-            &nbsp; {{ i }} &nbsp;
+            {% if i == page.number %}
+                <li class="page-item active" aria-current="page">
+            {% else %}
+                <li class="page-item">
+            {% endif %}
+                    <a class="page-link" href="/page/{{ i }}">{{ i }}</a>
+                </li>
         {% endfor %}
-
         {% if page.has_next %}
-            &nbsp; &nbsp; | &nbsp; &nbsp;
-            <a href="{% url 'page' page.next_page_number %}">&#9654;</a>
+            <li class="page-item">
+                <a class="page-link" href="{% url 'page' page.next_page_number %}">Следующая</a>
+            </li>
         {% endif %}
-    </p>
+    </ul>
+</nav>
 
 {% endblock content %}

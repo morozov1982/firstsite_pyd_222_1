@@ -1,5 +1,7 @@
 {% load static %}
 {#% load count_bbs %#}
+{% load bootstrap4 %}
+
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -7,6 +9,9 @@
     <meta charset="UTF-8">
     <title>{% block title %}Главная{% endblock %} ::
         Доска объявлений</title>
+
+    {% bootstrap_css %}
+
     <link rel="stylesheet" href="{% static 'bboard/style.css' %}">
     {#<link rel="stylesheet" href="{% get_static_prefix %}bboard/style.css">#}
     {#<link rel="stylesheet" href="{{ STATIC_URL }}bboard/style.css">#}
@@ -23,6 +28,9 @@
         Контента нет, но он есть!
     {% endblock %}
 </section>
+
+
+{% bootstrap_javascript jquery=True %}
 
 {% static 'bboard/script.js' as js_url %}
 <script src="{{ js_url }}"></script>

@@ -1,4 +1,5 @@
 {% extends "layout/basic.html" %}
+{% load bootstrap4 %}
 
 {% block title %}Добавление объявления{% endblock %}
 
@@ -6,42 +7,14 @@
     <h2>Добавление объявления</h2>
 
     {% if form.is_multipart %}
-        <form action="" method="post" enctype="multipart/form-data">
+        <form action="" method="post" enctype="multipart/form-data" class="col-md-4">
     {% else %}
-        <form action="" method="post">
+        <form action="" method="post" class="col-md-4">
     {% endif %}
         {% csrf_token %}
 
-        {# Быстрый вариант #}
-        {#{ form.as_p }#}
+        {% bootstrap_form form layout="horizontal" %}
+        {% buttons submit='Добавить' %}{% endbuttons %}
 
-
-        {# Расширенный вариант #}
-
-        {% for hidden in form.hidden_fields %}
-            {{ hidden }}
-        {% endfor %}
-
-        {% if form.non_field_errors %}
-            <ul>
-                {% for error in form.non_field_errors %}
-                <li><em>{{ error|escape }}</em></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
-        {% for field in form.visible_fields %}
-            {% if field.errors %}
-                <ul>
-                    {% for error in field.errors %}
-                    <li><em>{{ error|escape }}</em></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            <p>{{ field.label_tag }}<br>{{ field }}<br>
-            {{ field.help_text }}</p>
-        {% endfor %}
-
-        <input type="submit" value="Добавить">
     </form>
 {% endblock %}

@@ -1,8 +1,13 @@
 {% extends "layout/basic.html" %}
 {% load bbcode_tags %}
 {% load bootstrap4 %}
+{% load filtersandtags %}
 
 {% block content %}
+
+<div>{% lst ' | ' '1' '2' '3' '4' '5' %}</div>
+
+{% ulist '1' '2' '3' '4' '5' %}
 
 <p>Количество записей: {{ page.count }}</p>
 
@@ -32,6 +37,10 @@
         </a>
     </h2>
     <p>{{ bb.content.rendered }}</p>
+
+    <p><strong>Цена:</strong> {{ bb.price|cur }}</p>
+    <p><strong>Цена:</strong> {{ bb.price|cur:'тг.' }}</p>
+
     <p><a href="{{ bb.rubric.get_absolute_url }}">
         {{ bb.rubric.name }}</a></p>
     <p>{{ bb.published|date:"d.m.Y H:i:s" }}</p>

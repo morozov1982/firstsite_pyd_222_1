@@ -1,3 +1,6 @@
+from datetime import datetime
+from os.path import splitext
+
 from django.contrib.auth.models import User
 from django.core import validators
 from django.core.exceptions import ValidationError
@@ -14,6 +17,12 @@ def validate_even(val):
     if val % 2 != 0:
         raise ValidationError('Число %(value)s нечётное', code='odd',
                               params={'value': val})
+
+
+def get_timestamp_path(instance, filename):
+    return '%s%s%s' % (splitext(filename)[0],
+                       datetime.now().timestamp(),
+                       splitext(filename)[1])
 
 
 class RubricQuerySet(models.QuerySet):
@@ -127,6 +136,13 @@ class Bb(models.Model):
         auto_now_add=True,
         db_index=True,
         verbose_name="Опубликовано",
+    )
+
+    archive = models.FileField(
+        # upload_to='archives/',
+        # upload_to='archives/%Y/%m/%d/',
+        upload_to=get_timestamp_path,
+        blank=True,
     )
 
     objects = models.Manager()

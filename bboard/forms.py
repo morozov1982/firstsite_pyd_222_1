@@ -51,7 +51,7 @@ class BbForm(ModelForm):
                            # generator='captcha.helpers.math_challenge'
                            )
 
-    archive = forms.FileField(label='Выберите файл',)
+    picture = forms.ImageField(label='Выберите файл',)
 
     def clean_title(self):
         val = self.cleaned_data['title']
@@ -71,7 +71,7 @@ class BbForm(ModelForm):
 
     class Meta:
         model = Bb
-        fields = ('title', 'content', 'price', 'rubric', 'archive')
+        fields = ('title', 'content', 'price', 'rubric', 'picture')
 
 
 class SearchForm(forms.Form):

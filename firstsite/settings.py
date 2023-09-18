@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'captcha',
     'precise_bbcode',
+    'django_cleanup',
+    'easy_thumbnails',
 
     'bboard.apps.BboardConfig',
     'testapp.apps.TestappConfig',
@@ -183,3 +185,37 @@ CAPTCHA_FOREGROUND_COLOR = '#FFFFFF'
 
 BBCODE_SMILIES_UPLOAD_TO = "static/precise_bbcode/smilies"
 # BBCODE_ALLOW_SMILIES = False
+
+
+THUMBNAIL_ALIASES = {
+    'bboard.Bb.picture': {
+        'default': {
+            'size': (500, 300),
+            'crop': 'scale',
+        },
+    },
+    'testapp': {
+        'default': {
+            'size': (400, 300),
+            'crop': 'smart',
+            'bw': True,
+        },
+    },
+    '': {
+        'default': {
+            'size': (180, 240),
+            'crop': 'scale',
+        },
+        'big': {
+            'size': (480, 640),
+            'crop': '10,10',
+        }
+    },
+}
+
+THUMBNAIL_DEFAULT_OPTIONS = {
+    'quality': 90,
+    'subsampling': 1,
+}
+
+THUMBNAIL_BASEDIR = 'thumbs'

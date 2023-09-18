@@ -102,18 +102,18 @@ WSGI_APPLICATION = 'firstsite.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    #     # 'ATOMIC_REQUESTS': True,
-    #     # 'AUTOCOMMIT': True,
-    # }
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "firstsite",
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASS"),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ATOMIC_REQUESTS': True,
+        # 'AUTOCOMMIT': True,
     }
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
+    #     "NAME": "firstsite",
+    #     "USER": env("DB_USER"),
+    #     "PASSWORD": env("DB_PASS"),
+    # }
 }
 
 

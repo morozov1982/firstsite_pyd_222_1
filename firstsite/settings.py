@@ -118,23 +118,28 @@ DATABASES = {
     # }
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        # 'OPTIONS': {'max_similarity': 0.7},
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        # 'OPTIONS': {'min_length': 8},
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        # 'OPTIONS': {'password_list_path': 'какой-то путь'},
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'firstsite.validators.NoForbiddenCharsValidator',
+        'OPTIONS': {'forbidden_chars': (' ', ',', '.', ':', ';')},
     },
 ]
 

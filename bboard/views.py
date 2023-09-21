@@ -97,7 +97,7 @@ def index_resp(request):
 def index(request, page=1):
     # rubrics = Rubric.objects.all()
     # rubrics = Rubric.objects.order_by_bb_count()
-    rubrics = Rubric.objects.order_by_bb_count()
+    # rubrics = Rubric.objects.order_by_bb_count()
     # rubrics = Rubric.bbs.order_by_bb_count()
     bbs = Bb.objects.all()
     # bbs = Bb.by_price.all()
@@ -111,10 +111,10 @@ def index(request, page=1):
         bbs_paginator = paginator.get_page(paginator.num_pages)
 
     context = {
-        'rubrics': rubrics,
+        # 'rubrics': rubrics,
         'page': bbs_paginator,
         'bbs': bbs_paginator.object_list,
-        'count_bb': count_bb(),
+        # 'count_bb': count_bb(),
     }
 
     return HttpResponse(render_to_string('bboard/index.html', context, request))

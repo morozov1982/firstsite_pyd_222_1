@@ -62,6 +62,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'bboard.middlewares.my_middleware',
+    # 'bboard.middlewares.MyMiddleware',
+    # 'bboard.middlewares.RubricsMiddleware',
 ]
 
 ROOT_URLCONF = 'firstsite.urls'
@@ -85,6 +88,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.static',
+                'bboard.context_processors.rubrics',
             ],
             # 'libraies': {
             #     'filtersandtags': 'bboard.filtersandtags',

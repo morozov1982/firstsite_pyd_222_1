@@ -1,6 +1,6 @@
 from django.urls import path
 
-from testapp.views import AddSms, ReadSms, add, edit, index, get
+from testapp.views import AddSms, ReadSms, add, edit, index, get, test_cookie
 
 app_name = 'testapp'
 
@@ -11,4 +11,5 @@ urlpatterns = [
     path('edit/<int:pk>/', edit, name='edit'),
     path('', index, name='index'),
     path('get/<path:filename>/', get, name='get'),
+    path('cookie/', test_cookie, name='test_cookie'),
 ]

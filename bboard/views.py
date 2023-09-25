@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Min, Max, Count, Q, Sum, IntegerField, Avg
 from django.forms import modelformset_factory, inlineformset_factory
@@ -35,10 +36,11 @@ def print_request_fields(request):
 
 # class BbCreateView(CreateView):
 # class BbCreateView(LoginRequiredMixin, CreateView):
-class BbCreateView(UserPassesTestMixin, CreateView):
+class BbCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
     template_name = 'bboard/create.html'
     form_class = BbForm
     success_url = reverse_lazy('index')
+    success_message = 'Объявление о продаже товара "% (title)s" создано.'
 
     # Начало: Для UserPassesTestMixin
     def test_func(self):
@@ -79,28 +81,8 @@ def index_resp(request):
     return resp
 
 
-# def index(request):
-#     rubrics = Rubric.objects.all()
-#     bbs = Bb.objects.all()
-#     paginator = Paginator(bbs, 5)
-#
-#     if 'page' in request.GET:
-#         page_num = request.GET['page']
-#     else:
-#         page_num = 1
-#
-#     page = paginator.get_page(page_num)
-#     context = {'rubrics': rubrics, 'page': page, 'bbs': page.object_list}
-#
-#     return HttpResponse(render_to_string('bboard/index.html', context, request))
-
 def index(request, page=1):
-    # rubrics = Rubric.objects.all()
-    # rubrics = Rubric.objects.order_by_bb_count()
-    # rubrics = Rubric.objects.order_by_bb_count()
-    # rubrics = Rubric.bbs.order_by_bb_count()
     bbs = Bb.objects.all()
-    # bbs = Bb.by_price.all()
     paginator = Paginator(bbs, 5)
 
     try:
@@ -110,21 +92,30 @@ def index(request, page=1):
     except EmptyPage:
         bbs_paginator = paginator.get_page(paginator.num_pages)
 
+    # if 'counter' in request.COOKIES:
+    #     cnt = int(request.COOKIES['counter']) + 1
+    # else:
+    #     cnt = 1
+
+    if 'counter' in request.session:
+        cnt = request.session['counter'] + 1
+    else:
+        cnt = 1
+
     context = {
-        # 'rubrics': rubrics,
         'page': bbs_paginator,
         'bbs': bbs_paginator.object_list,
-        # 'count_bb': count_bb(),
+        'cnt': cnt,
     }
 
-    return HttpResponse(render_to_string('bboard/index.html', context, request))
+    request.session['counter'] = cnt
 
+    response = HttpResponse(render_to_string('bboard/index.html', context, request))
+    # response.set_cookie('counter', cnt)
 
-# def index(request):
-#     resp_content = ('Здесь будет', ' главная', ' страница', ' сайта')
-#     resp = StreamingHttpResponse(resp_content,
-#                                  content_type='text/plain; charset=utf-8')
-#     return resp
+    # response.delete_cookie('counter')
+
+    return response
 
 
 def index_old(request):

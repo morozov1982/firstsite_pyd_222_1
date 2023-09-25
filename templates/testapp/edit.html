@@ -5,6 +5,19 @@
 {% block content %}
     <h2>Изменение изображения</h2>
 
+    {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    У Р А ! ! !
+                {% endif %}
+                {{ message }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
     <div>
         <img src="{{ img.img.url }}" alt="Картинка">
     </div>

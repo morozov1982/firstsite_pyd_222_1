@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView,\
     DeleteView, UpdateView
+from django.contrib import messages
 
 from firstsite.settings import BASE_DIR
 from testapp.forms import SMSCreateForm, ImgForm
@@ -71,10 +72,29 @@ def edit(request, pk):
         form = ImgForm(request.POST, request.FILES, instance=img)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            messages.add_message(request, messages.SUCCESS, 'Картинка изменена',
+                                 extra_tags='first second')
+            # messages.success(request, 'Картинка изменена', extra_tags='first second')
+            # return redirect('index')
+
+            msgs = messages.get_messages(request)
+            print(msgs[0].message)
+
     else:
         form = ImgForm(instance=img)
 
     context = {'form': form, 'img': img}
 
     return render(request, 'testapp/edit.html', context)
+
+
+def test_cookie(request):
+    if request.session.test_cookie_worked():
+        request.session.delete_test_cookie()
+        print("COOKIES удалены!!!")
+    else:
+        print("Просим клиента включить COOKIES")
+
+    request.session.set_test_cookie()
+
+    return render(request, 'testapp/test_cookie.html')

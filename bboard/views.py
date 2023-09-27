@@ -18,6 +18,7 @@ from precise_bbcode.bbcode import get_parser
 
 from bboard.forms import BbForm, SearchForm
 from bboard.models import Bb, Rubric
+from bboard.signals import add_bb
 
 
 def count_bb():
@@ -40,7 +41,7 @@ class BbCreateView(SuccessMessageMixin, UserPassesTestMixin, CreateView):
     template_name = 'bboard/create.html'
     form_class = BbForm
     success_url = reverse_lazy('index')
-    success_message = 'Объявление о продаже товара "% (title)s" создано.'
+    # success_message = 'Объявление о продаже товара "% (title)s" создано.'
 
     # Начало: Для UserPassesTestMixin
     def test_func(self):
@@ -65,6 +66,7 @@ class BbEditView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['rubrics'] = Rubric.objects.all()
         context['count_bb'] = count_bb()
+        # add_bb.send(sender=self.object)
         return context
 
 

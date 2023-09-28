@@ -1,6 +1,7 @@
 import os.path
 from datetime import datetime
 
+from django.core.mail import send_mail, send_mass_mail
 from django.db import transaction
 from django.http import FileResponse
 from django.shortcuts import render, redirect
@@ -98,3 +99,21 @@ def test_cookie(request):
     request.session.set_test_cookie()
 
     return render(request, 'testapp/test_cookie.html')
+
+
+def test_mail(request):
+    title = 'Test2'
+    message = 'Test2!!!'
+    em_from = 'webmaster@supersite.ru'
+    em_to = ['user@othersite.ru']
+    em_to_2 = ['user@othersite.ru', 'user2@othersite.ru']
+    html_mes = '<h1>!!! 2Text2 !!!</h1>'
+
+    msg1 = (title, message, em_from, em_to_2)
+    msg2 = (title, message, em_from, em_to_2)
+
+    # send_mass_mail((msg1, msg2))
+
+    send_mail(title, message, em_from, em_to, html_message=html_mes)
+
+    return redirect('testapp:index')

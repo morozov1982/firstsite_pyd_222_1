@@ -1,6 +1,7 @@
 {% load static %}
 {#% load count_bbs %#}
 {% load bootstrap4 %}
+{% load cache %}
 
 
 <!DOCTYPE html>
@@ -21,7 +22,26 @@
     <h1>Объявления</h1>
 </header>
 
+{#% cache 10 main_menu user.is_athenticated %#}
+
+
+    {% if user.is_authenticated %}
+        <h3>
+            <a href="{% url 'logout' %}">
+                Выйти ({{ user.username }})
+            </a>
+        </h3>
+        {% else %}
+        <h3>
+            <a href="{% url 'login' %}">
+                Войти
+            </a>
+        </h3>
+    {% endif %}
+
+
 {% include 'includes/inc_main_menu.html' %}
+{#% endcache %#}
 
 <section>
     {% block content %}

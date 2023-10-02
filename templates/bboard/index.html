@@ -11,20 +11,6 @@
 
 <p>{{ block.super }}</p>
 
-{% if user.is_authenticated %}
-<h3>
-    <a href="{% url 'logout' %}">
-        Выйти ({{ user.username }})
-    </a>
-</h3>
-{% else %}
-<h3>
-    <a href="{% url 'login' %}">
-        Войти
-    </a>
-</h3>
-{% endif %}
-
 {#% bootstrap_pagination page size="small" url="/page" %#}
 
 {% for bb in bbs %}

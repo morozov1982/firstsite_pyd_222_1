@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect, HttpResponse, \
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.template.loader import get_template, render_to_string
 from django.urls import reverse_lazy, reverse
+from django.views.decorators.cache import cache_page
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
@@ -83,8 +84,9 @@ def index_resp(request):
     return resp
 
 
+# @cache_page(60 * 5)
 def index(request, page=1):
-    bbs = Bb.objects.all()
+    bbs = Bb.objects.all().prefetch_related('rubric')
     paginator = Paginator(bbs, 5)
 
     try:

@@ -84,7 +84,7 @@ def index_resp(request):
     return resp
 
 
-# @cache_page(60 * 5)
+@cache_page(60 * 5)
 def index(request, page=1):
     bbs = Bb.objects.all().prefetch_related('rubric')
     paginator = Paginator(bbs, 5)

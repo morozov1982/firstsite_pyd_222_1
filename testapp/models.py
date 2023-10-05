@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from bboard.models import Rubric, get_timestamp_path
+from userapp.models import BbUser
 
 
 class AdvUser(models.Model):
@@ -13,7 +14,7 @@ class AdvUser(models.Model):
     )
 
     user = models.OneToOneField(
-        User,
+        BbUser,
         on_delete=models.CASCADE
     )
 
@@ -39,13 +40,13 @@ class SMS(models.Model):
     comment = models.CharField(max_length=120)
 
     sender = models.ForeignKey(
-        User,
+        BbUser,
         on_delete=models.CASCADE,
         related_name="sender"
     )
 
     receiver = models.ForeignKey(
-        User,
+        BbUser,
         on_delete=models.CASCADE,
         related_name="receiver"
     )
@@ -90,7 +91,7 @@ class Message(models.Model):
 
 
 class PrivateMessage(Message):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(BbUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=40)
     email = None
 

@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 
 from bboard.models import Rubric, Bb
+from userapp.models import BbUser
 
 JSON_PATH = os.path.join('bboard', 'fixtures')
 
@@ -39,4 +40,4 @@ class Command(BaseCommand):
             new_bb = Bb(**_bb)
             new_bb.save()
 
-        User.objects.create_superuser('admin', 'admin@bb.local', '123')
+        BbUser.objects.create_superuser('admin', 'admin@bb.local', '123', age=25)

@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'bboard.apps.BboardConfig',
     'testapp.apps.TestappConfig',
     'authapp',
+    'userapp',
 ]
 
 MIDDLEWARE = [
@@ -78,6 +79,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'firstsite.urls'
+
+AUTH_USER_MODEL = 'userapp.BbUser'
 
 # ABSOLUTE_URL_OVERRIDES = {
 #     # 'bboard.rubric': lambda rec: "/bboard/%s/" % rec.pk,

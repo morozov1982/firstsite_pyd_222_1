@@ -16,9 +16,12 @@ from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 from precise_bbcode.bbcode import get_parser
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from bboard.forms import BbForm, SearchForm
 from bboard.models import Bb, Rubric
+from bboard.serializers import RubricSerializer
 from bboard.signals import add_bb
 
 
@@ -380,3 +383,19 @@ def search(request):
         sf = SearchForm()
     context = {'form': sf}
     return render(request, 'bboard/search.html', context)
+
+
+@api_view(['GET'])
+def api_rubrics(request):
+    if request.method == 'GET':
+        rubrics = Rubric.objects.all()
+        serializer = RubricSerializer(rubrics, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def api_rubrics_detail(request, pk):
+    if request.method == 'GET':
+        rubric = Rubric.objects.get(pk=pk)
+        serializer = RubricSerializer(rubric)
+        return Response(serializer.data)

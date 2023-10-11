@@ -30,7 +30,10 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -51,6 +54,8 @@ INSTALLED_APPS = [
     'django_cleanup',
     'easy_thumbnails',
     'django_redis',
+    'rest_framework',
+    'corsheaders',
 
     'bboard.apps.BboardConfig',
     'testapp.apps.TestappConfig',
@@ -64,6 +69,7 @@ MIDDLEWARE = [
     # 'django.middleware.cache.UpdateCacheMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
 
     # 'django.middleware.cache.FetchFromCacheMiddleware',
@@ -312,3 +318,7 @@ CACHES = {
 # # Настройки для работы с очередями задач (не обязательно)
 # CELERY_BROKER_URL = 'redis://127.0.0.1:6379/2'  # Адрес и порт вашего Redis-сервера
 
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:5500',
+    'http://localhost:5500',
+]

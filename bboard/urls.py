@@ -3,7 +3,7 @@ from django.views.decorators.cache import cache_page
 
 from bboard.views import (index, BbCreateView, detail, BbByRubricView,
                           BbDetailView, rubrics, bbs, search, BbEditView,
-                          api_rubrics, api_rubrics_detail)
+                          api_rubrics, api_rubric_detail)
 
 vals = {
     'name': 'by_index',
@@ -22,7 +22,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('rubrics/', rubrics, name='rubrics'),
 
-    path('api/rubrics/<int:pk>/', api_rubrics_detail),
+    path('api/rubrics/<int:pk>/', api_rubric_detail),
     path('api/rubrics/', api_rubrics),
 
     path('bbs/<int:rubric_id>/', bbs, name='bbs'),

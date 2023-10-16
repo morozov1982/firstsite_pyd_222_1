@@ -1,6 +1,10 @@
 // const domain = 'http://localhost:8000/';
 const domain = 'http://127.0.0.1:8000/';
 
+const username = 'admin';
+const password = '123';
+const credentails = window.btoa(username + ':' + password);
+
 // let list = document.getElementById('list');
 let list = document.querySelector('#list');
 let listLoader = new XMLHttpRequest();
@@ -20,9 +24,9 @@ listLoader.addEventListener('readystatechange', () => {
             for (let i = 0; i < data.length; i++) {
                 d = data[i];
                 s += '<li>' + d.name + ' <a href="' + domain +
-                     'api/rubrics/' + d.id +
+                     'api/v1/rubrics/' + d.id +
                      '/" class="detail">Вывести</a> <a href="' + domain +
-                     'api/rubrics/' + d.id +
+                     'api/v1/rubrics/' + d.id +
                      '/" class="delete">Удалить</a></li>';
             }
             s += '</ul>';
@@ -69,10 +73,10 @@ name.form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     let vid = id.value, url, method;
     if (vid) {
-        url = 'api/rubrics/' + vid + '/';
+        url = 'api/v1/rubrics/' + vid + '/';
         method = 'PUT';
     } else {
-        url = 'api/rubrics/';
+        url = 'api/v1/rubrics/';
         method = 'POST';
     }
 
@@ -98,7 +102,8 @@ rubricDeleter.addEventListener('readystatechange', () => {
 });
 
 function listLoad() {
-    listLoader.open('GET', domain + 'api/rubrics/', true);
+    listLoader.open('GET', domain + 'api/v1/rubrics/', true);
+    listLoader.setRequestHeader('Authorization', 'Basic ' + credentails);
     listLoader.send();
 }
 

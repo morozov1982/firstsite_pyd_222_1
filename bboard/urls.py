@@ -1,9 +1,13 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from django.views.decorators.cache import cache_page
+from rest_framework.routers import DefaultRouter
 
 from bboard.views import (index, BbCreateView, detail, BbByRubricView,
                           BbDetailView, rubrics, bbs, search, BbEditView,
-                          api_rubrics, api_rubric_detail)
+                          api_rubrics, api_rubric_detail,
+                          # APIRubrics, APIRubricDetail,
+                          APIRubricViewSet,
+                          )
 
 vals = {
     'name': 'by_index',
@@ -18,12 +22,21 @@ vals = {
 #     re_path(r'^add/$', BbCreateView.as_view(), name='add'),
 # ]
 
+router = DefaultRouter()
+router.register('rubrics', APIRubricViewSet)
+
 urlpatterns = [
     path('', index, name='index'),
     path('rubrics/', rubrics, name='rubrics'),
 
-    path('api/rubrics/<int:pk>/', api_rubric_detail),
-    path('api/rubrics/', api_rubrics),
+    # path('api/v1/rubrics/<int:pk>/', api_rubric_detail),
+    # path('api/v1/rubrics/', api_rubrics),
+
+    # Start: Lesson_50
+    # path('api/v1/rubrics/', APIRubrics.as_view()),
+    # path('api/v1/rubrics/<int:pk>/', APIRubricDetail.as_view()),
+    path('api/v1/', include(router.urls)),
+    # End: Lesson_50
 
     path('bbs/<int:rubric_id>/', bbs, name='bbs'),
     path('page/<int:page>/', index, name='page'),

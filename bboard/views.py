@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.decorators import login_required, user_passes_test, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -28,6 +30,9 @@ from bboard.forms import BbForm, SearchForm
 from bboard.models import Bb, Rubric
 from bboard.serializers import RubricSerializer
 from bboard.signals import add_bb
+
+
+logger = logging.getLogger(__name__)
 
 
 def count_bb():
@@ -92,8 +97,10 @@ def index_resp(request):
     return resp
 
 
-@cache_page(60 * 5)
+# @cache_page(60 * 5)
 def index(request, page=1):
+    logger.warning('М Ы   Н А   Г Л А В Н О Й ! ! !')
+
     bbs = Bb.objects.all().prefetch_related('rubric')
     paginator = Paginator(bbs, 5)
 

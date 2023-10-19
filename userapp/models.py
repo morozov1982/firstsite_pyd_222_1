@@ -14,3 +14,7 @@ class BbUser(AbstractUser):
         blank=True,
         null=True,
     )
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'

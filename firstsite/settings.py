@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -127,18 +127,18 @@ WSGI_APPLICATION = 'firstsite.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        # 'ATOMIC_REQUESTS': True,
-        # 'AUTOCOMMIT': True,
-    }
-    # "default": {
-    #     "ENGINE": "django.db.backends.postgresql_psycopg2",
-    #     "NAME": "firstsite",
-    #     "USER": env("DB_USER"),
-    #     "PASSWORD": env("DB_PASS"),
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    #     # 'ATOMIC_REQUESTS': True,
+    #     # 'AUTOCOMMIT': True,
     # }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": "firstsite",
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASS"),
+    }
 }
 
 # Password validation
@@ -183,6 +183,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_prod')
 
 STATIC_URL = '/static/'
 
